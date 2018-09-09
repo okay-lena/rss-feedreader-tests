@@ -34,7 +34,7 @@ $(function() {
          it('have URLs defined and not empty', function() {
            allFeeds.forEach(function(feed) {
              expect(feed.url).toBeDefined();
-             expect(feed.url).not.toBe(0);
+             expect(feed.url.length).not.toBe(0);
            })
          })
 
@@ -46,7 +46,7 @@ $(function() {
          it('have names defined and not empty', function() {
            allFeeds.forEach(function(feed) {
              expect(feed.name).toBeDefined();
-             expect(feed.name).not.toBe(0);
+             expect(feed.name.length).not.toBe(0);
            })
          })
 
@@ -73,10 +73,10 @@ $(function() {
       it('changes visibility when the menu icon is clicked', function() {
         var menuIcon = $('.menu-icon-link');
         menuIcon.click();
-        expect($('body').hasClass('menu-hidden')).toBeFalsy();
+        expect($('body').hasClass('menu-hidden')).not.toBe(true);
 
         menuIcon.click();
-        expect($('body').hasClass('menu-hidden')).toBeTruthy();
+        expect($('body').hasClass('menu-hidden')).toBe(true);
       })
     })
 
@@ -90,13 +90,13 @@ $(function() {
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
          beforeEach(function(done) {
-           loadFeed(0, function() {
-             done();
-           })
+           loadFeed(0, done);
          })
 
          it('has at least a single .entry element in the .feed container', function(done) {
-           var entries = document.querySelectorAll('.entry');
+           var feedContainer = document.querySelector('.feed');
+           var entries = feedContainer.querySelectorAll('.entry');
+           console.log(entries);
            expect(entries.length).toBeGreaterThan(0);
            done();
          })
@@ -115,18 +115,15 @@ $(function() {
            loadFeed(0, function() {
              initialFeed = document.querySelector('.feed').innerHTML;
 
-             loadFeed(1, function() {
-               done();
-             })
+             loadFeed(1, done);
 
            })
 
          })
 
-         it('has content updated', function(done) {
+         it('has content updated', function() {
            var newFeed = document.querySelector('.feed').innerHTML;
            expect(initialFeed).not.toBe(newFeed);
-           done();
          })
 
        })
